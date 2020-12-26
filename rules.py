@@ -11,5 +11,5 @@ rules = [
     "**Rule 10:**\nUpon joining this server, you have agreed that you are in ACP 8th or 7th grade. If you are not, admins will not hesitate to ban/kick you.",
     "**Rule 11:**\nDo not talk in #advertisement-board.",
     "**Rule 12:**\nSwearing is only tolerated as long as it's not extremely excessive and not used to insult another member. Any variations of the N word is not allowed.",
-    "**Rule 13:**\nAn infraction of these rules can lead to a reminder, official warning, kick, or ban. Admins and moderators will act accordingly to your behavior. If you believe we have done something wrongly, you can ask and explain to defend yourself, however, if you complain about it we will ignore your request completely. Bans can be appealed by DMing @Grub. "
+    "**Rule 13:**\nAn infraction of these rules can lead to a reminder, official warning, kick, or ban. Admins and moderators will act accordingly to your behavior. If you believe we have done something wrong, you can ask and explain to defend yourself, however, if you complain about it we will ignore your request completely. Bans can be appealed by DMing @Grub. "
 ]
