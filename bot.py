@@ -54,12 +54,10 @@ async def calc(ctx, *, equation):
             await ctx.send(f'{list[0]} x {list[2]} = {int(list[0]) * int(list[2])}')
         elif list[1] == '/':
             await ctx.send(f'{list[0]} / {list[2]} = {int(list[0]) / int(list[2])}')
+        elif list[1] == '^':
+            await ctx.send(f'{list[0]} ^ {list[2]} = {int(list[0]) ** int(list[2])}')
         else:
-            await ctx.send(f'Could not understand, incorrect format. Please make sure to perform !calc like this: <number> <operator> <number>.\nEx:\n- !calc 4 x 5\n- !calc 3345 + 123\n- !calc 54/3')
-
+            await ctx.send(f'Could not understand; incorrect format. Include a space between number and operator. Please make sure to perform !calc like this: <number> <operator> <number>.\nEx:\n- !calc 4 x 5\n- !calc 3345 + 123\n- !calc 54 / 3')
     except:
-        await ctx.send(f'Could not understand, incorrect format. Please make sure to perform !calc like this: <number> <operator> <number>.\nEx:\n- !calc 4 x 5\n- !calc 3345 + 123\n- !calc 54/3')
+        await ctx.send(f'Could not understand; incorrect format. Include a space between number and operator. Please make sure to perform !calc like this: <number> <operator> <number>.\nEx:\n- !calc 4 x 5\n- !calc 3345 + 123\n- !calc 54 / 3')
 
-# Token
-import os
-client.run(os.getenv('TOKEN'))
