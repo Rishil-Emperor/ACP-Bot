@@ -73,5 +73,3 @@ async def calc(ctx, *, equation):
             await ctx.send(f'Could not understand; incorrect format. Include a space between number and operator. Please make sure to perform !calc like this: <number> <operator> <number>.\nEx:\n- !calc 4 x 5\n- !calc 3345 + 123\n- !calc 54 / 3')
     except:
         await ctx.send(f'Could not understand; incorrect format. Include a space between number and operator. Please make sure to perform !calc like this: <number> <operator> <number>.\nEx:\n- !calc 4 x 5\n- !calc 3345 + 123\n- !calc 54 / 3')
-
-client.run('NzgzOTA4MjU1OTI3MTA3NTg0.X8hldA.E6uOYrL9IGPvsvV88HI-NoiitqE')
