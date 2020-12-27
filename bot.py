@@ -41,6 +41,19 @@ async def ban(ctx, member : discord.Member,*, reason = 'No Reason Provided'):
     await ctx.send(f'{member} has been banned from ACP Main for {reason}.')
     await member.ban(reason=reason)
 
+# !unban <user>
+@client.command()
+@commands.has_permissions(ban_members = True)
+async def unban(ctx, *, member):
+    banned_users = await ctx.guild.bans()
+    member_name, member_disc = member.split('#')
+    for banned_entry in banned_users:
+        user = banned_entry.user
+        if(user.name, user.discriminator) == (member_name, member_disc):
+            await ctx.guild.unban(user)
+            await ctx.send(f'{member_name} has been unbanned.')
+            return
+
 # !calc <number> <operator> <number>
 @client.command(aliases=['calculate'])
 async def calc(ctx, *, equation):
@@ -61,3 +74,4 @@ async def calc(ctx, *, equation):
     except:
         await ctx.send(f'Could not understand; incorrect format. Include a space between number and operator. Please make sure to perform !calc like this: <number> <operator> <number>.\nEx:\n- !calc 4 x 5\n- !calc 3345 + 123\n- !calc 54 / 3')
 
+client.run('NzgzOTA4MjU1OTI3MTA3NTg0.X8hldA.E6uOYrL9IGPvsvV88HI-NoiitqE')
