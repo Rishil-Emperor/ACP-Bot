@@ -11,6 +11,12 @@ client = commands.Bot(command_prefix='!')
 async def on_ready():
     print('Bot is ready.')
 
+# On Error
+@client.event
+async def on_command_error(ctx, error):
+    if isinstance(error, commands.MissingPermissions):
+        await ctx.send('You do not have permission to perform this command.')
+
 # !hello
 @client.command()
 async def hello(ctx):
@@ -31,8 +37,8 @@ async def purge(ctx, amount):
 @client.command()
 @commands.has_permissions(kick_members = True)
 async def kick(ctx, member : discord.Member,*, reason = 'No Reason Provided'):
-    await ctx.send(f'**{member}** has been kicked from ACP Main for {reason}.')
-    await member.kick(reason=reason)
+        await ctx.send(f'**{member}** has been kicked from ACP Main for {reason}.')
+        await member.kick(reason=reason)
 
 # !ban <user>
 @client.command()
@@ -74,32 +80,47 @@ async def unmute(ctx, member : discord.Member):
 @client.command()
 @commands.has_permissions(kick_members=True)
 async def warn(ctx, member : discord.Member, *, reason = 'No Reason Provided'):
-    await ctx.send(f'**{member}** has been warned for {reason}')
+    await ctx.send(f'**{member}** has been warned for {reason}.')
 
 # !ping
 @client.command()
 async def ping(ctx):
     latency = str(client.latency * 1000)
     decimal = latency.split('.')
-    await ctx.send(f'🏓 Pong! Latency: **{decimal[0]} ms**!')
+    await ctx.send(f'🏓 **Pong!** `{decimal[0]}ms`')
 
 # !calc <number> <operator> <number>
 @client.command(aliases=['calculate'])
 async def calc(ctx, *, equation):
     try:
         list = equation.split(' ')
-        if list[1] == '+':
-            await ctx.send(f'{list[0]} + {list[2]} = {int(list[0]) + int(list[2])}')
-        elif list[1] == '-':
-            await ctx.send(f'{list[0]} - {list[2]} = {int(list[0]) - int(list[2])}')
-        elif list[1].lower() == 'x' or list[1] == '*':
-            await ctx.send(f'{list[0]} x {list[2]} = {int(list[0]) * int(list[2])}')
-        elif list[1] == '/':
+        digits1 = 0
+        digits2 = 0
+        for x in list[0]:
+          if x != '.':
+            digits1 += 1
+          else:
+            continue
+        for x in list[2]:
+          if x != '.':
+            digits2 += 1
+          else:
+            continue
+        if digits1 <= 10 and digits2 <= 10:
+          if list[1] == '+':
+             await ctx.send(f'{list[0]} + {list[2]} = {int(list[0]) + int(list[2])}')
+          elif list[1] == '-':
+             await ctx.send(f'{list[0]} - {list[2]} = {int(list[0]) - int(list[2])}')
+          elif list[1].lower() == 'x' or list[1] == '*':
+             await ctx.send(f'{list[0]} x {list[2]} = {int(list[0]) * int(list[2])}')
+          elif list[1] == '/':
             await ctx.send(f'{list[0]} / {list[2]} = {int(list[0]) / int(list[2])}')
-        elif list[1] == '^':
-            await ctx.send(f'{list[0]} ^ {list[2]} = {int(list[0]) ** int(list[2])}')
+          elif list[1] == '^':
+              await ctx.send(f'{list[0]} ^ {list[2]} = {int(list[0]) ** int(list[2])}')
+          else:
+              await ctx.send(f'Could not understand; incorrect format. Include a space between number and operator. Please make sure to perform !calc like this: <number> <operator> <number>.\nEx:\n- !calc 4 x 5\n- !calc 3345 + 123\n- !calc 54 / 3')
         else:
-            await ctx.send(f'Could not understand; incorrect format. Include a space between number and operator. Please make sure to perform !calc like this: <number> <operator> <number>.\nEx:\n- !calc 4 x 5\n- !calc 3345 + 123\n- !calc 54 / 3')
+            await ctx.send(f'Numbers must only contain 10 or less digits.')
     except:
-        await ctx.send(f'Could not understand; incorrect format. Include a space between number and operator. Please make sure to perform !calc like this: <number> <operator> <number>.\nEx:\n- !calc 4 x 5\n- !calc 3345 + 123\n- !calc 54 / 3')
+          await ctx.send(f'Could not understand; incorrect format. Include a space between number and operator. Please make sure to perform !calc like this: <number> <operator> <number>.\nEx:\n- !calc 4 x 5\n- !calc 3345 + 123\n- !calc 54 / 3')
 
