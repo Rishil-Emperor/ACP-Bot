@@ -108,15 +108,13 @@ async def calc(ctx, *, equation):
             continue
         if digits1 <= 10 and digits2 <= 10:
           if list[1] == '+':
-             await ctx.send(f'{list[0]} + {list[2]} = {int(list[0]) + int(list[2])}')
+             await ctx.send(f'{list[0]} + {list[2]} = {float(list[0]) + float(list[2])}')
           elif list[1] == '-':
-             await ctx.send(f'{list[0]} - {list[2]} = {int(list[0]) - int(list[2])}')
+             await ctx.send(f'{list[0]} - {list[2]} = {float(list[0]) - float(list[2])}')
           elif list[1].lower() == 'x' or list[1] == '*':
-             await ctx.send(f'{list[0]} x {list[2]} = {int(list[0]) * int(list[2])}')
+             await ctx.send(f'{list[0]} x {list[2]} = {float(list[0]) * float(list[2])}')
           elif list[1] == '/':
-            await ctx.send(f'{list[0]} / {list[2]} = {int(list[0]) / int(list[2])}')
-          elif list[1] == '^':
-              await ctx.send(f'{list[0]} ^ {list[2]} = {int(list[0]) ** int(list[2])}')
+            await ctx.send(f'{list[0]} / {list[2]} = {float(list[0]) / float(list[2])}')
           else:
               await ctx.send(f'Could not understand; incorrect format. Include a space between number and operator. Please make sure to perform !calc like this: <number> <operator> <number>.\nEx:\n- !calc 4 x 5\n- !calc 3345 + 123\n- !calc 54 / 3')
         else:
