@@ -2,6 +2,7 @@ import discord
 from discord.ext import commands
 import rules
 from rules import rules
+import asyncio
 
 # Bot Prefix
 client = commands.Bot(command_prefix='!')
@@ -63,10 +64,21 @@ async def unban(ctx, *, member):
 # !mute <user>
 @client.command()
 @commands.has_permissions(kick_members=True)
-async def mute(ctx, member : discord.Member):
+async def mute(ctx, member : discord.Member, duration=0,*, unit = None):
     muted_role = ctx.guild.get_role(607034271990939658)
+    await ctx.send(f'**{member.mention}** has been muted for *{duration}{unit}*.')
     await member.add_roles(muted_role)
-    await ctx.send(f'**{member.mention}** has been muted.')
+    if unit.lower() == 's':
+        wait = 1 * duration
+        await asyncio.sleep(wait)
+    elif unit.lower() == 'm':
+        wait = 60 * duration
+        await asyncio.sleep(wait)
+    elif unit.lower() == 'h':
+        wait = 3600 * duration
+        await asyncio.sleep(wait)
+    await member.remove_roles(muted_role)
+    await ctx.send(f'**{member.mention}** has been unmuted.')
 
 # !unmute <user>
 @client.command()
