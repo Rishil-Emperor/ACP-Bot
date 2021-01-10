@@ -3,6 +3,12 @@ from discord.ext import commands
 import rules
 from rules import rules
 import asyncio
+import requests
+from bs4 import BeautifulSoup
+import concurrent.futures
+import random
+import replies
+from replies import replies
 
 # Bot Prefix
 client = commands.Bot(command_prefix='!')
@@ -11,17 +17,59 @@ client = commands.Bot(command_prefix='!')
 @client.event
 async def on_ready():
     print('Bot is ready.')
+    await client.change_presence(status=discord.Status.online, activity=discord.Activity(type=discord.ActivityType.playing, name="Rishil_Emperor#0001"), )
 
 # On Error
 @client.event
 async def on_command_error(ctx, error):
     if isinstance(error, commands.MissingPermissions):
         await ctx.send('You do not have permission to perform this command.')
+    if isinstance(error, commands.CommandOnCooldown):
+        await ctx.send(f'You are on cooldown for {str(error.retry_after)[:3]} seconds!')
 
 # !hello
 @client.command()
 async def hello(ctx):
     await ctx.send('Hi!')
+
+# !coinflip
+@client.command(aliases = ['coinflip'])
+async def flip(ctx):
+    coin = ['Heads', 'Tails']
+    await ctx.send(f':coin: | It\'s **{random.choice(coin)}**!')
+
+# !8ball <question>
+@client.command(aliases = ['8Ball', '8ball'])
+async def fortune(ctx, *, statement):
+    reply = random.choice(replies)
+    await ctx.send(f'🎱 | {reply}')
+
+# !rps <choice>
+@client.command(aliases = ['rockpaperscissors', 'RPS'])
+async def rps(ctx, *, choice):
+    rps_choices = ['rock', 'paper', 'scissors']
+    rps_choice = random.choice(rps_choices)
+    if choice.lower() == rps_choice:
+        await ctx.send(f'I chose `{rps_choice}` and you chose `{choice.lower()}`. **Tie!**')
+    elif choice.lower() == 'rock' and rps_choice == 'scissors' or choice.lower() == 'scissors' and rps_choice == 'paper' or choice.lower() == 'paper' and rps_choice == 'rock':
+        await ctx.send(f'I chose `{rps_choice}` and you chose `{choice.lower()}`. **You Win!**')
+    elif choice.lower() == 'rock' and rps_choice == 'paper' or choice.lower() == 'paper' and rps_choice == 'scissors' or choice.lower() == 'scissors' and rps_choice == 'rock':
+        await ctx.send(f'I chose `{rps_choice}` and you chose `{choice.lower()}`. **I Win!**')
+    else:
+        await ctx.send(f'Something went wrong. Please make sure your choice is either `rock`, `paper`, or `scissors`.')
+
+# !choosenumber <number 1> <number 2>
+@client.command(aliases = ['number'])
+async def choosenumber(ctx, num1, *, num2):
+    try:
+        num_1 = int(num1)
+        num_2 = int(num2)
+        if num_1 > num_2:
+            await ctx.send(f'Please make sure you are inputting two numbers. Make sure that the first number is less than the second number.')
+        else:
+            await ctx.send(f'Number: **{random.choice(range(num_1, num_2+1))}**')
+    except:
+        await ctx.send(f'Please make sure you are inputting two numbers. Make sure that the first number is less than the second number.')
 
 # !rule <number>
 @client.command()
@@ -96,10 +144,22 @@ async def warn(ctx, member : discord.Member, *, reason = 'No Reason Provided'):
 
 # !ping
 @client.command()
+@commands.cooldown(1, 5, type=commands.BucketType.user)
 async def ping(ctx):
     latency = str(client.latency * 1000)
     decimal = latency.split('.')
-    await ctx.send(f'🏓 **Pong!** `{decimal[0]}ms`')
+    await ctx.send(f'🏓 | **Pong!** `{decimal[0]}ms`')
+
+# !whois <user>
+@client.command(aliases = ['user', 'info'])
+async def whois(ctx, member : discord.Member = None):
+    if member is None:
+        member = ctx.author
+    embed = discord.Embed(title = member.name, description = member.mention, color = discord.Colour.purple())
+    embed.add_field(name = 'ID', value = member.id , inline = True)
+    embed.set_thumbnail(url = member.avatar_url)
+    embed.set_footer(icon_url=ctx.author.avatar_url, text=f'Requested By: {ctx.author.name}')
+    await ctx.send(embed = embed)
 
 # !calc <number> <operator> <number>
 @client.command(aliases=['calculate'])
